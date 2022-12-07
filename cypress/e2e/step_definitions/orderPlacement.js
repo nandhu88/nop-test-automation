@@ -1,4 +1,15 @@
-import { Given, Then, And, When } from "@badeball/cypress-cucumber-preprocessor";
+import { Given, Then, And, When } from "@badeball/cypress-cucumber-preprocessor"
+import HomePage from '../../support/pages/HomePage'
+import SearchProductPage from '../../support/pages/SearchProductPage'
+import ProductDetailPage from '../../support/pages/ProductDetailPage'
+import ShoppingCartPage from '../../support/pages/ShoppingCartPage'
+import LoginPage from '../../support/pages/LoginPage'
+import CustomerDetailPage from '../../support/pages/CustomerDetailPage'
+
+const homePage = new HomePage()
+const searchProductPage = new SearchProductPage()
+const productDetailPage = new ProductDetailPage()
+const custInfoPage = new CustomerDetailPage()
 
 Given('User opens NopCommerce website', () => {
     cy.viewport(1200, 800)
@@ -6,14 +17,14 @@ Given('User opens NopCommerce website', () => {
     cy.title().should('include', 'nopCommerce demo store')
 })
 
-And('User searches for the product', () => {
-    cy.get('#customerCurrency').select("Euro")
-    cy.get('a[href*="/computers"]').contains('Computer').click()
-    cy.get('h1').should('have.text', 'Computers')
+And('User searches for the product', function () {
+    homePage.selectCurreny().select('Euro')
+    homePage.clickProductItem('computers');
+    searchProductPage.pageHeader().should('have.text', 'Computers')
     cy.get('a[href*="/desktops"]').contains(' Desktops ').click()
-    cy.get('h1').should('have.text', 'Desktops')
-    cy.get('a[href*="/build-your-own-computer"]').eq(0).click()
-    cy.get('h1').should('have.text', 'Build your own computer')
+    searchProductPage.pageHeader().should('have.text', 'Desktops')
+    searchProductPage.clickProductItem('build-your-own-computer');
+    productDetailPage.pageHeader().should('have.text', 'Build your own computer')
 })
 
 And('User adds the item to the cart', () => {
@@ -32,15 +43,15 @@ And('User checkouts the order', () => {
 })
 
 And('User enters personal details for shipment', () => {
-    cy.get('#BillingNewAddress_FirstName').type('testName')
-    cy.get('#BillingNewAddress_LastName').type('lastName')
-    cy.get('#BillingNewAddress_Email').type('email@gmail.com')
-    cy.get('#BillingNewAddress_Company').type('milie')
-    cy.get('#BillingNewAddress_CountryId').select('Netherlands')
-    cy.get('#BillingNewAddress_City').type('utrecht')
-    cy.get('#BillingNewAddress_Address1').type('amsterdamstraat')
-    cy.get('#BillingNewAddress_ZipPostalCode').type('3423ns')
-    cy.get('#BillingNewAddress_PhoneNumber').type('02030231029')
+    custInfoPage.customerFirstName().type('testName')
+    custInfoPage.customerLastName().type('lastName')
+    custInfoPage.customerEmail().type('email@gmail.com')
+    custInfoPage.customerCompany().type('milie')
+    custInfoPage.customerCountry().select('Netherlands')
+    custInfoPage.customerCity().type('utrecht')
+    custInfoPage.customerAddress().type('amsterdamstraat')
+    custInfoPage.customerAddressZipCode().type('3423NS')
+    custInfoPage.customerPhoneNo().type('02030231029')
     cy.get('#billing-buttons-container > .new-address-next-step-button').click()
     cy.get('#shipping-method-buttons-container > .button-1').click()
 })
@@ -55,3 +66,5 @@ Then('User adds credit card details', () => {
     cy.get('#CardCode').type('093')
     cy.get('#payment-info-buttons-container > .button-1').click()
 })
+
+
