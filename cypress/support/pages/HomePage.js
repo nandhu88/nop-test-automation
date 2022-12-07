@@ -1,11 +1,11 @@
 class HomePage {
 
-    selectCurreny() {
+    selectCurrency() {
         return cy.get('#customerCurrency')
     }
 
     clickProductItem(urlSelector) {
-        return cy.get(`a[href*="/${urlSelector}"]`).eq(0).click()
+        return cy.get(`a[href*="/${urlSelector}"]`).eq(0)
     }
 
 }

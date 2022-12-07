@@ -5,7 +5,11 @@ class SearchProductPage {
     }
 
     clickProductItem(urlSelector) {
-        return cy.get(`a[href*="/${urlSelector}"]`).eq(0).click()
+        return cy.get(`a[href*="/${urlSelector}"]`).eq(0)
+    }
+
+    addToCartButton() {
+        return cy.get('.product-box-add-to-cart-button')
     }
 
 }

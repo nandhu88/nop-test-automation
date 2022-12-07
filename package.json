@@ -5,14 +5,15 @@
   "main": "index.js",
   "scripts": {
     "cy:run": "cypress run",
-    "cy:open": "cypress open"
+    "cy:open": "cypress open",
+    "cy:dashboard": "cypress run --record --key 43f299c2-55b7-456f-a63a-6ee3e410523c"
   },
   "author": "Nandhini",
   "license": "ISC",
   "devDependencies": {
     "@badeball/cypress-cucumber-preprocessor": "11.4.0",
     "@bahmutov/cypress-esbuild-preprocessor": "2.1.3",
-    "cypress": "10.11.0",
+    "cypress": "^11.2.0",
     "esbuild": "0.14.48"
   }
 }

@@ -17,8 +17,9 @@ module.exports = defineConfig({
 
       return config
     },
+    projectId: "zjss7p",
     specPattern: "cypress/e2e/features/*.feature",
-    base_url: "https://demo.nopcommerce.com/",
+    baseUrl: "https://demo.nopcommerce.com/",
     chromeWebSecurity: false
   },
 });

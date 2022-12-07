@@ -5,66 +5,109 @@ import ProductDetailPage from '../../support/pages/ProductDetailPage'
 import ShoppingCartPage from '../../support/pages/ShoppingCartPage'
 import LoginPage from '../../support/pages/LoginPage'
 import CustomerDetailPage from '../../support/pages/CustomerDetailPage'
+import CheckoutPage from "../../support/pages/checkoutPage"
 
 const homePage = new HomePage()
 const searchProductPage = new SearchProductPage()
 const productDetailPage = new ProductDetailPage()
 const custInfoPage = new CustomerDetailPage()
+const loginPage = new LoginPage()
+const shoppingCart = new ShoppingCartPage()
+const checkoutPage = new CheckoutPage()
 
 Given('User opens NopCommerce website', () => {
     cy.viewport(1200, 800)
-    cy.visit("https://demo.nopcommerce.com/")
+    cy.visit('/')
     cy.title().should('include', 'nopCommerce demo store')
 })
 
-And('User searches for the product', function () {
-    homePage.selectCurreny().select('Euro')
-    homePage.clickProductItem('computers');
+And('User searches for the product', () => {
+    homePage.selectCurrency().select('Euro')
+    homePage.clickProductItem('computers').click()
     searchProductPage.pageHeader().should('have.text', 'Computers')
-    cy.get('a[href*="/desktops"]').contains(' Desktops ').click()
+    searchProductPage.clickProductItem('desktops').click({ force: true })
     searchProductPage.pageHeader().should('have.text', 'Desktops')
-    searchProductPage.clickProductItem('build-your-own-computer');
+    searchProductPage.clickProductItem('build-your-own-computer').click()
     productDetailPage.pageHeader().should('have.text', 'Build your own computer')
 })
 
 And('User adds the item to the cart', () => {
-    cy.get('#product_attribute_2').select('2 GB')
-    cy.get('#product_attribute_3_7').check().should('be.checked')
-    cy.get('#add-to-cart-button-1').click();
+    productDetailPage.computerRam().select('2 GB')
+    productDetailPage.computerHD().check().should('be.checked')
+    productDetailPage.addToCart().click()
     cy.scrollTo('top')
     cy.wait(3000)
-    cy.get('a[href*="/cart"]').eq(0).click()
+    productDetailPage.clickAddToCart('cart').click()
 })
 
 And('User checkouts the order', () => {
-    cy.get('#termsofservice').check().should('be.checked')
-    cy.get('#checkout').click();
-    cy.get('.checkout-as-guest-button').click();
+    shoppingCart.pageHeader().should('have.text', 'Shopping cart')
+    shoppingCart.productName().should('have.text', 'Build your own computer')
+    shoppingCart.productAmount().should('include.text', '€1216.90')
+    shoppingCart.agreeTerms().check().should('be.checked')
+    shoppingCart.checkoutOrder().click()
+    loginPage.asGuest().click()
 })
 
 And('User enters personal details for shipment', () => {
-    custInfoPage.customerFirstName().type('testName')
-    custInfoPage.customerLastName().type('lastName')
-    custInfoPage.customerEmail().type('email@gmail.com')
-    custInfoPage.customerCompany().type('milie')
-    custInfoPage.customerCountry().select('Netherlands')
-    custInfoPage.customerCity().type('utrecht')
-    custInfoPage.customerAddress().type('amsterdamstraat')
-    custInfoPage.customerAddressZipCode().type('3423NS')
-    custInfoPage.customerPhoneNo().type('02030231029')
-    cy.get('#billing-buttons-container > .new-address-next-step-button').click()
-    cy.get('#shipping-method-buttons-container > .button-1').click()
+    custInfoPage.pageHeader().should('have.text', 'Checkout')
+    custInfoPage.addCustomerInfo()
+    custInfoPage.nextCustomerInfo().click()
+    custInfoPage.groundShiptment().click()
+    custInfoPage.creditCardPayment().check().should('be.checked')
+    custInfoPage.continuePayment().click()
+    custInfoPage.addPaymentInfo()
+    custInfoPage.confirmPayment().click()
 })
 
-Then('User adds credit card details', () => {
-    cy.get('#paymentmethod_1').check().should('be.checked')
-    cy.get('#payment-method-buttons-container > .button-1').click()
-    cy.get('#CardholderName').type('test name')
-    cy.get('#CardNumber').type('4012 8888 8888 1881')
-    cy.get('#ExpireMonth').select('09')
-    cy.get('#ExpireYear').select('2027')
-    cy.get('#CardCode').type('093')
-    cy.get('#payment-info-buttons-container > .button-1').click()
+And('User confirms the order', () => {
+    checkoutPage.confirmOrder().click()
 })
+
+Then('User sees the order confirmation message', () => {
+    checkoutPage.pageHeader().should('have.text', 'Thank you')
+    checkoutPage.orderConfirmMessage().should('have.text', 'Your order has been successfully processed!')
+})
+
+Given('User goes to the login page', () => {
+    cy.viewport(1200, 800)
+    cy.visit('/')
+    cy.title().should('include', 'nopCommerce demo store')
+    loginPage.loginMenu().click()
+})
+
+And('User enters the login credentials', () => {
+    loginPage.userName().type('qatesting@gmail.com')
+    loginPage.password().type('nopcommerce')
+    loginPage.loginButton().click()
+    searchProductPage.clickProductItem('electronics').click()
+    cy.wait(2000)
+    searchProductPage.clickProductItem('camera-photo').click({ force: true })
+    cy.wait(2000)
+})
+
+And('User adds product to the cart', () => {
+    searchProductPage.addToCartButton().eq(1).click()
+    productDetailPage.shoppingCart().click()
+    shoppingCart.agreeTerms().check().should('be.checked')
+    shoppingCart.checkoutOrder().click()
+})
+
+And('User enters personal data and place an order', () => {
+    // cy.get('#billing-buttons-container > .new-address-next-step-button').click()
+    custInfoPage.nextCustomerInfo().click()
+    custInfoPage.groundShiptment().click()
+    custInfoPage.creditCardPayment().check().should('be.checked')
+    custInfoPage.continuePayment().click()
+    custInfoPage.addPaymentInfo()
+    custInfoPage.confirmPayment().click()
+    checkoutPage.confirmOrder().click()
+})
+
+Then('User sees a thank you page for order confirmation', () => {
+    checkoutPage.pageHeader().should('have.text', 'Thank you')
+    checkoutPage.orderConfirmMessage().should('have.text', 'Your order has been successfully processed!')
+})
+
 
 
