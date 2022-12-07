@@ -5,7 +5,7 @@ import ProductDetailPage from '../../support/pages/ProductDetailPage'
 import ShoppingCartPage from '../../support/pages/ShoppingCartPage'
 import LoginPage from '../../support/pages/LoginPage'
 import CustomerDetailPage from '../../support/pages/CustomerDetailPage'
-import CheckoutPage from "../../support/pages/checkoutPage"
+import CheckoutPage from "../../support/pages/CheckoutPage"
 
 const homePage = new HomePage()
 const searchProductPage = new SearchProductPage()
