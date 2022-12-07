@@ -8,10 +8,11 @@ Different test scenarios has been covered to validate the order placement.
 
 ## Build with 
 
-This project is build with below frameworks/libraries for checking the order placement.
+This project is build with below frameworks/libraries.
 
 * Cypress
 * Cucumber Framework
+* POM 
 
 ## Getting started
 
@@ -29,15 +30,28 @@ Follow below steps to setup cypress locally.
 
 The steps below will take you all the way through Cypress. 
 
-It is assumed you have nothing installed except for node + git.
+### 1. Install nodejs
 
-### 1. Install Cypress and Cucumber 
+It is advised to have latest version of node.js and npm to run the cypress test.
 
-Below commands to install node modules and run cypress with cucumber locally. 
+Install using below command. 
+
+```bash
+## brew install node
+brew install node 
+
+## check node version 
+node -v
+
+## check npm version
+npm -v
+```
+
+### 2. Install Cypress and Cucumber 
+
+Follow the below commands to install node modules and run cypress with cucumber locally. 
 
 The `npm install` will automatically download cypress and cucumber for running the test automation. 
-
-The dependencies are added in the package.json file. 
 
 ```bash
 ## clone this repo to a local directory
@@ -49,25 +63,19 @@ cd nop-test-automation
 ## install the node_modules
 npm install
 
-## run cypress through cypress runner. 
-
+## to execute the cypress test in browser mode. 
 npm run cy:open
 
-## run cypress with dashboard monitoring
-
+## to execute the cypress test with dashboard monitoring
 npm run cy:dashboard
 
-or 
-
-## run cypress in headless mode
-
+## to execute the cypress test in headless mode
 npm run cy:run
 ```
-
 
 ### 3. Cypress dashboard
 
 The cypress test result are shown in Cypress dashboard. 
 
-Failure results are notified in Slack channel 
+Failure results are notified in Slack channel. 
 
