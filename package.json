@@ -1,0 +1,25 @@
+{
+  "name": "nop-test-automation",
+  "version": "1.0.0",
+  "description": "nop ecommerce end to end test automation",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nandhu88/nop-test-automation.git"
+  },
+  "keywords": [
+    "Cypress"
+  ],
+  "author": "Nandhini",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nandhu88/nop-test-automation/issues"
+  },
+  "homepage": "https://github.com/nandhu88/nop-test-automation#readme",
+  "devDependencies": {
+    "cypress": "^12.0.1"
+  }
+}
