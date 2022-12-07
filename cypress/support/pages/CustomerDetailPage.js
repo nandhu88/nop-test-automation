@@ -74,6 +74,18 @@ class CustomerDetailPage {
         return cy.get('#payment-info-buttons-container > .button-1')
     }
 
+    errorMessageFirstName() {
+        return cy.get(':nth-child(1) > .field-validation-error')
+    }
+
+    errorMessageLastName() {
+        return cy.get(':nth-child(2) > .field-validation-error')
+    }
+
+    errorMessageEmail() {
+        return cy.get(':nth-child(3) > .field-validation-error')
+    }
+
     addCustomerInfo() {
         const custInfoPage = new CustomerDetailPage()
         custInfoPage.customerFirstName().type('testFirstName')

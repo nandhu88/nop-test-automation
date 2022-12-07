@@ -81,9 +81,8 @@ And('User enters the login credentials', () => {
     loginPage.password().type('nopcommerce')
     loginPage.loginButton().click()
     searchProductPage.clickProductItem('electronics').click()
-    cy.wait(2000)
     searchProductPage.clickProductItem('camera-photo').click({ force: true })
-    cy.wait(2000)
+    cy.wait(3000)
 })
 
 And('User adds product to the cart', () => {
@@ -94,7 +93,6 @@ And('User adds product to the cart', () => {
 })
 
 And('User enters personal data and place an order', () => {
-    // cy.get('#billing-buttons-container > .new-address-next-step-button').click()
     custInfoPage.nextCustomerInfo().click()
     custInfoPage.groundShiptment().click()
     custInfoPage.creditCardPayment().check().should('be.checked')
@@ -109,5 +107,25 @@ Then('User sees a thank you page for order confirmation', () => {
     checkoutPage.orderConfirmMessage().should('have.text', 'Your order has been successfully processed!')
 })
 
+Given('User adds item to the cart', () => {
+    cy.viewport(1200, 800)
+    cy.visit('/')
+    searchProductPage.clickProductItem('electronics').click()
+    searchProductPage.clickProductItem('camera-photo').click({ force: true })
+    searchProductPage.addToCartButton().eq(1).click()
+    cy.wait(3000)
+    productDetailPage.shoppingCart().click()
+})
 
+And('User checkout the order without sharing shipping data', () => {
+    shoppingCart.agreeTerms().check().should('be.checked')
+    shoppingCart.checkoutOrder().click()
+    loginPage.asGuest().click()
+    custInfoPage.nextCustomerInfo().click()
+})
 
+Then('Right error messages are shown', () => {
+    custInfoPage.errorMessageFirstName().should('have.text', 'First name is required.')
+    custInfoPage.errorMessageLastName().should('have.text', 'Last name is required.')
+    custInfoPage.errorMessageEmail().should('have.text', 'Email is required.')
+})

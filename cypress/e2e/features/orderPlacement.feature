@@ -17,3 +17,8 @@ Feature: NopCommerce e2e testing
         And User adds product to the cart
         And User enters personal data and place an order
         Then User sees a thank you page for order confirmation
+
+    Scenario: Error message validation
+        Given User adds item to the cart
+        And User checkout the order without sharing shipping data
+        Then Right error messages are shown
